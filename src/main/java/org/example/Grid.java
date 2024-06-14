@@ -285,7 +285,10 @@ public class Grid {
 
          */
         for (int i = startPosX; i >= 0; i--) {
-            if(grid[i][startPosY] instanceof MineTile) {
+            if((grid[i][startPosY] instanceof MineTile) )  {
+                break;
+            } else if ((grid[i][startPosY] instanceof NumberTile && ((NumberTile) grid[i][startPosY]).getNumOfMines() > 0)){
+                grid[i][startPosY].setHidden(false);
                 break;
             } else {
                 grid[i][startPosY].setHidden(false);
@@ -310,7 +313,10 @@ public class Grid {
         for (int i = startPosX; i < grid.length; i++) {
             if(grid[i][startPosY] instanceof MineTile) {
                 break;
-            } else {
+            } else if (grid[i][startPosY] instanceof NumberTile && ((NumberTile) grid[i][startPosY]).getNumOfMines() > 0){
+                grid[i][startPosY].setHidden(false);
+                break;
+            }else {
                 grid[i][startPosY].setHidden(false);
             }
         }
@@ -331,9 +337,12 @@ public class Grid {
 
          */
         for (int i = startPosY; i < grid.length; i++) {
-            if(grid[startPosX][i] instanceof MineTile) {
+            if((grid[startPosX][i] instanceof MineTile)) {
                 break;
-            } else {
+            } else if (grid[startPosX][i] instanceof NumberTile && ((NumberTile) grid[startPosX][i]).getNumOfMines() > 0){
+                grid[i][startPosY].setHidden(false);
+                break;
+            }else {
                 grid[startPosX][i].setHidden(false);
             }
         }
@@ -353,7 +362,10 @@ public class Grid {
 
          */
         for ( int i = startPosY; i>=0;i--) {
-            if(grid[startPosX][i] instanceof MineTile) {
+            if((grid[startPosX][i] instanceof MineTile)) {
+                break;
+            } else if (grid[startPosX][i] instanceof NumberTile && ((NumberTile) grid[startPosX][i]).getNumOfMines() > 0){
+                grid[i][startPosY].setHidden(false);
                 break;
             } else {
                 grid[startPosX][i].setHidden(false);
@@ -371,6 +383,9 @@ public class Grid {
         for (int i = startPosX; i >= 0; i --) {
             for (int j =startPosY; j < grid.length; j++) {
                 if(grid[i][j] instanceof MineTile) {
+                    break;
+                } else if (grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                    grid[i][startPosY].setHidden(false);
                     break;
                 } else {
                     grid[i][j].setHidden(false);
@@ -390,6 +405,9 @@ public class Grid {
             for (int j =startPosY; j >= 0; j --) {
                 if(grid[i][j] instanceof MineTile) {
                     break;
+                }else if  (grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                    grid[i][startPosY].setHidden(false);
+                    break;
                 } else {
                     grid[i][j].setHidden(false);
                 }
@@ -406,7 +424,10 @@ public class Grid {
 
         for (int i = startPosX; i < grid.length; i ++) {
             for (int j =startPosY; j >= 0; j --) {
-                if(grid[i][j] instanceof MineTile) {
+                if((grid[i][j] instanceof MineTile)) {
+                    break;
+                } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                    grid[i][startPosY].setHidden(false);
                     break;
                 } else {
                     grid[i][j].setHidden(false);
@@ -426,7 +447,10 @@ public class Grid {
             for (int j =startPosY; j < grid.length; j ++) {
                 if(grid[i][j] instanceof MineTile) {
                     break;
-                } else {
+                } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                    grid[i][startPosY].setHidden(false);
+                    break;
+                }else {
                     grid[i][j].setHidden(false);
                 }
             }

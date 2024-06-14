@@ -4,16 +4,21 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        /*
+        Game game = new Game(true);
+        game.startGame();
+
+         */
         Scanner scn = new Scanner(System.in);
         System.out.println("X Starting point: ");
         int startX = scn.nextInt();
         System.out.println("Y Starting point: ");
         int startY = scn.nextInt();
-        Grid gameGrid = new Grid(startX-1,startY-1);
+        Grid gameGrid = new Grid(startX - 1, startY - 1);
         Tile[][] board = gameGrid.createBasicGrid();
-        for (int i=0; i< board.length; i++) {
-            for(int j=0; j<board[i].length; j++) {
-                if(board[i][j].isHidden()) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j].isHidden()) {
                     System.out.print(board[i][j].printIsHidden());
                 } else {
                     System.out.print(board[i][j].printVal() + " ");
@@ -22,4 +27,7 @@ public class Main {
             System.out.println();
         }
     }
+
+
+
 }
