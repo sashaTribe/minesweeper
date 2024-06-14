@@ -2,6 +2,9 @@ package org.example;
 
 public class Tile {
     private Position position;
+
+
+
     //private int x;
     //private int y;
     private boolean isHidden;
@@ -26,4 +29,14 @@ public class Tile {
             return '-';
         }
     }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
+    }
+
+
 }

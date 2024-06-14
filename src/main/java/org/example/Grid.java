@@ -249,10 +249,35 @@ public class Grid {
         return count;
     }
 
+    /**
+    public void hideTiles () {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        for (int i=0; i < grid.length; i++) {
+
+        }
+
+     }
+*/
     public void updateGrid(Tile[][] grid, int x, int y) {
 
     }
 
+    public void revealNorth(){
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        if (startPosX > 0) {
+            int i = startPosX;
+            while (!(grid[i][startPosY] instanceof MineTile)) {
+                grid[i][startPosY].setHidden(false);
+            }
+        }
+        this.setGrid(grid);
+    }
 
 
 
