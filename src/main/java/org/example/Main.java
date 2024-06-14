@@ -13,7 +13,11 @@ public class Main {
         Tile[][] board = gameGrid.createBasicGrid();
         for (int i=0; i< board.length; i++) {
             for(int j=0; j<board[i].length; j++) {
-                System.out.print(board[i][j].printVal() + " ");
+                if(board[i][j].isHidden()) {
+                    System.out.print(board[i][j].printIsHidden());
+                } else {
+                    System.out.print(board[i][j].printVal() + " ");
+                }
             }
             System.out.println();
         }

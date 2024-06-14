@@ -21,15 +21,12 @@ public class Tile {
     }
 
 
-    public char printVal(){
-        if (this.isHidden) {
-            return 'H';
-        }
-        else {
-            return '-';
-        }
+    public String printIsHidden(){
+        return "H ";
     }
-
+    public char printVal(){
+        return '0';
+    }
     public boolean isHidden() {
         return isHidden;
     }

@@ -80,7 +80,12 @@ public class Grid {
         ArrayList<Position> freePositions = getFreeSpaces(noMineList, grid);
         placeMines(freePositions, grid);
         fillRestOfBoard(grid);
-
+        this.revealNorth();
+        this.revealSouth();
+        this.revealEast();
+        this.revealWest();
+        this.revealNorthEast();
+        this.revealNorthWest();
         return grid;
     }
 
@@ -210,9 +215,9 @@ public class Grid {
 
     private int calcNumMines (Position position, Tile[][] grid) {
         int[] numList = {1, -1, 0};
-        System.out.println("It is happy before creating that list");
+        //System.out.println("It is happy before creating that list");
         //ArrayList<Position> coords = generateCoords(position.getPosX(), position.getPosY(), numList);
-        System.out.println("It is happy to create coordinates list");
+        //System.out.println("It is happy to create coordinates list");
         int count = 0;
         /*
         for (int i=0; i < coords.size(); i++) {
@@ -233,15 +238,15 @@ public class Grid {
             if ((tempValY >= 0 && tempValY < 9) && (tempValX >= 0 && tempValX < 9)) {
                 if ((grid[tempValX][y] instanceof MineTile)) {
                     count += 1;
-                    System.out.println("Yes");
+                    //System.out.println("Yes");
                 }
                 if ((grid[x][tempValY] instanceof MineTile)) {
                     count += 1;
-                    System.out.println(count);
+                    //System.out.println(count);
                 }
                 if ((grid[tempValX][tempValY] instanceof MineTile)){
                     count += 1;
-                    System.out.println(count);
+                    //System.out.println(count);
                 }
             }
 
@@ -269,16 +274,184 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
-
+        /*
         if (startPosX > 0) {
             int i = startPosX;
-            while (!(grid[i][startPosY] instanceof MineTile)) {
+            while (!(grid[i][startPosY] instanceof MineTile) && i > 0) {
+                grid[i][startPosY].setHidden(false);
+                i -= 1;
+            }
+        }
+
+         */
+        for (int i = startPosX; i >= 0; i--) {
+            if(grid[i][startPosY] instanceof MineTile) {
+                break;
+            } else {
                 grid[i][startPosY].setHidden(false);
             }
         }
         this.setGrid(grid);
     }
 
+    public void revealSouth(){
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
 
+        /*
+        while (!(grid[i][startPosY] instanceof MineTile) && i <= grid.length -1) {
+            System.out.print(i);
+            grid[i][startPosY].setHidden(false);
+            i += 1;
+        }
+
+         */
+        for (int i = startPosX; i < grid.length; i++) {
+            if(grid[i][startPosY] instanceof MineTile) {
+                break;
+            } else {
+                grid[i][startPosY].setHidden(false);
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealEast(){
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+        //int i = startPosY;
+        /*
+        while (!(grid[startPosX][i] instanceof MineTile) && i <= grid.length -1) {
+            grid[startPosX][i].setHidden(false);
+            i += 1;
+        }
+
+         */
+        for (int i = startPosY; i < grid.length; i++) {
+            if(grid[startPosX][i] instanceof MineTile) {
+                break;
+            } else {
+                grid[startPosX][i].setHidden(false);
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealWest(){
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+        /*
+        while (!(grid[startPosX][i] instanceof MineTile) && i >= 0) {
+            grid[startPosX][i].setHidden(false);
+            i -= 1;
+        }
+
+         */
+        for ( int i = startPosY; i>=0;i--) {
+            if(grid[startPosX][i] instanceof MineTile) {
+                break;
+            } else {
+                grid[startPosX][i].setHidden(false);
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealNorthEast() {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        for (int i = startPosX; i >= 0; i --) {
+            for (int j =startPosY; j < grid.length; j++) {
+                if(grid[i][j] instanceof MineTile) {
+                    break;
+                } else {
+                    grid[i][j].setHidden(false);
+                }
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealNorthWest() {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        for (int i = startPosX; i >= 0; i --) {
+            for (int j =startPosY; j >= 0; j --) {
+                if(grid[i][j] instanceof MineTile) {
+                    break;
+                } else {
+                    grid[i][j].setHidden(false);
+                }
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealSouthWest() {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        for (int i = startPosX; i < grid.length; i ++) {
+            for (int j =startPosY; j >= 0; j --) {
+                if(grid[i][j] instanceof MineTile) {
+                    break;
+                } else {
+                    grid[i][j].setHidden(false);
+                }
+            }
+        }
+
+        this.setGrid(grid);
+    }
+
+    public void revealSouthWEast() {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        for (int i = startPosX; i < grid.length; i ++) {
+            for (int j =startPosY; j < grid.length; j ++) {
+                if(grid[i][j] instanceof MineTile) {
+                    break;
+                } else {
+                    grid[i][j].setHidden(false);
+                }
+            }
+        }
+
+        this.setGrid(grid);
+    }
+/*
+    public void revealNorthWest() {
+        Tile[][] grid = this.getGrid();
+        int startPosX = this.getStartX();
+        int startPosY = this.getStartY();
+
+        if (startPosY < 9 && startPosX < 9) {
+            int i = startPosX;
+            int j = startPosY;
+            while (i < 9 || j < 9) {
+                grid[i][j].setHidden(false);
+                i += 1;
+                j += 1;
+            }
+        }
+
+        this.setGrid(grid);
+    }
+*/
 
 }
