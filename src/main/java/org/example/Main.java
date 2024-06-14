@@ -4,11 +4,12 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        /*
+
         Game game = new Game(true);
         game.startGame();
 
-         */
+
+        /*
         Scanner scn = new Scanner(System.in);
         System.out.println("X Starting point: ");
         int startX = scn.nextInt();
@@ -26,6 +27,8 @@ public class Main {
             }
             System.out.println();
         }
+
+         */
     }
 
 

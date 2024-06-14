@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class Game {
 
 
+
+
     private Grid grid;
     private boolean hasGameStarted;
     private Position pos;
@@ -39,10 +41,46 @@ public class Game {
             }
             System.out.println();
         }
+        grid.createBasicGrid();
+        for (int i = 0; i < grid.getGrid().length; i++) {
+            for (int j = 0; j < grid.getGrid()[i].length; j++) {
+                if (grid.getGrid()[i][j].isHidden()) {
+                    System.out.print(grid.getGrid()[i][j].printIsHidden());
+                } else {
+                    System.out.print(grid.getGrid()[i][j].printVal() + " ");
+                }
+            }
+            System.out.println();
+        }
 
     }
 
+    public void runGame(){
+        System.out.println("Would you like to place flag or reveal tile");
+        Scanner scn = new Scanner(System.in);
+        String instruction = scn.next();
 
+        System.out.println("Can you give me the x coordinate: ");
+        int xpos = scn.nextInt();
+        System.out.println("Can you give me the y coordinate: ");
+        int ypos = scn.nextInt();
+
+        if (instruction.equals("Place Flag")){
+            // call a method
+        }else if (instruction.equals("Reveal Tile")){
+            //call a method
+        }else {
+            System.out.println("Instruction invalid");
+        }
+    }
+
+    public void placeFlag(int x, int y){
+        Tile[][] grid = this.getGrid().getGrid();
+        if (grid[x][y].isHidden()) {
+            grid[x][y].setHidden(false);
+            grid[x][y].setFlagged(true);
+        }
+    }
 
     public Position getPos() {
         return pos;
@@ -59,6 +97,15 @@ public class Game {
     public void setNumOfFlags(int numOfFlags) {
         this.numOfFlags = numOfFlags;
     }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
 
 
 }

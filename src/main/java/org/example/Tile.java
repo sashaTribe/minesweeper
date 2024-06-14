@@ -2,12 +2,10 @@ package org.example;
 
 public class Tile {
     private Position position;
-
-
-
-    //private int x;
-    //private int y;
     private boolean isHidden;
+
+
+
     private boolean isFlagged;
 
     public Tile(int x, int y){
@@ -33,6 +31,14 @@ public class Tile {
 
     public void setHidden(boolean hidden) {
         isHidden = hidden;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        isFlagged = flagged;
     }
 
 

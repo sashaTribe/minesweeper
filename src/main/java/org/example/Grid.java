@@ -67,25 +67,36 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startX = this.getStartX();
         int startY = this.getStartY();
+        // make every item a Tile object
         for (int i= 0; i < numOfRows; i++) {
             for (int j=0; j < numOfCols; j++) {
                 grid[i][j] = new Tile(i,j);
             }
         }
-        grid[startX][startY] = new EmptyTile(startX, startY);
+        //make starting position a numberTile object
+        grid[startX][startY] = new NumberTile(startX, startY, 0);
+        grid[startX][startY].printVal();
+
+        //create list of positions for a non-mine zone
         int[] numList1 = {-1, 1, 2,-2};
         ArrayList<Position> noMineList = generateCoords(startX, startY, numList1);
         grid = noMineZone(grid, noMineList);
         this.setGrid(grid);
+
+        // fills up the rest of the positions
         ArrayList<Position> freePositions = getFreeSpaces(noMineList, grid);
         placeMines(freePositions, grid);
         fillRestOfBoard(grid);
+
+        // reveal rest of board up to mines
         this.revealNorth();
         this.revealSouth();
         this.revealEast();
         this.revealWest();
         this.revealNorthEast();
         this.revealNorthWest();
+        this.revealSouthWest();
+        this.revealSouthWEast();
         return grid;
     }
 
@@ -93,7 +104,7 @@ public class Grid {
         for (Position position : coordsList) {
             int tempX = position.getPosX();
             int tempY = position.getPosY();
-            grid[tempX][tempY] = new EmptyTile(tempX, tempY);
+            grid[tempX][tempY] = new NumberTile(tempX, tempY, 0);
         }
         return grid;
     }
@@ -156,6 +167,7 @@ public class Grid {
                     freeSpaces.add(tempPos);
                 }
 
+
             }
         }
         return freeSpaces;
@@ -206,7 +218,7 @@ public class Grid {
                     Position position = new Position(i,j);
                     int numOfMines = calcNumMines(position, grid);
                     //System.out.println("It is happy to calculate the amount of surrounding mines");
-                    grid[i][j] = new NumberTile(i,j,numOfMines);
+                    grid[i][j] = new NumberTile(i,j, numOfMines);
                 }
             }
         }
@@ -215,20 +227,9 @@ public class Grid {
 
     private int calcNumMines (Position position, Tile[][] grid) {
         int[] numList = {1, -1, 0};
-        //System.out.println("It is happy before creating that list");
-        //ArrayList<Position> coords = generateCoords(position.getPosX(), position.getPosY(), numList);
-        //System.out.println("It is happy to create coordinates list");
-        int count = 0;
-        /*
-        for (int i=0; i < coords.size(); i++) {
-            int x = position.getPosX();
-            int y = position.getPosY();
-            if (grid[x][y] instanceof MineTile) {
-                count += 1;
-            }
-        }
 
-         */
+        int count = 0;
+
         int x = position.getPosX();
         int y = position.getPosY();
         for (int i = 0; i < numList.length; i++) {
@@ -254,18 +255,7 @@ public class Grid {
         return count;
     }
 
-    /**
-    public void hideTiles () {
-        Tile[][] grid = this.getGrid();
-        int startPosX = this.getStartX();
-        int startPosY = this.getStartY();
 
-        for (int i=0; i < grid.length; i++) {
-
-        }
-
-     }
-*/
     public void updateGrid(Tile[][] grid, int x, int y) {
 
     }
@@ -274,25 +264,21 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
-        /*
-        if (startPosX > 0) {
-            int i = startPosX;
-            while (!(grid[i][startPosY] instanceof MineTile) && i > 0) {
-                grid[i][startPosY].setHidden(false);
-                i -= 1;
-            }
-        }
 
-         */
         for (int i = startPosX; i >= 0; i--) {
             if((grid[i][startPosY] instanceof MineTile) )  {
                 break;
+
             } else if ((grid[i][startPosY] instanceof NumberTile && ((NumberTile) grid[i][startPosY]).getNumOfMines() > 0)){
                 grid[i][startPosY].setHidden(false);
                 break;
+
+
             } else {
                 grid[i][startPosY].setHidden(false);
+
             }
+
         }
         this.setGrid(grid);
     }
@@ -301,21 +287,15 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
-
-        /*
-        while (!(grid[i][startPosY] instanceof MineTile) && i <= grid.length -1) {
-            System.out.print(i);
-            grid[i][startPosY].setHidden(false);
-            i += 1;
-        }
-
-         */
         for (int i = startPosX; i < grid.length; i++) {
             if(grid[i][startPosY] instanceof MineTile) {
                 break;
+
             } else if (grid[i][startPosY] instanceof NumberTile && ((NumberTile) grid[i][startPosY]).getNumOfMines() > 0){
                 grid[i][startPosY].setHidden(false);
                 break;
+
+
             }else {
                 grid[i][startPosY].setHidden(false);
             }
@@ -328,20 +308,16 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
-        //int i = startPosY;
-        /*
-        while (!(grid[startPosX][i] instanceof MineTile) && i <= grid.length -1) {
-            grid[startPosX][i].setHidden(false);
-            i += 1;
-        }
 
-         */
         for (int i = startPosY; i < grid.length; i++) {
             if((grid[startPosX][i] instanceof MineTile)) {
                 break;
+
             } else if (grid[startPosX][i] instanceof NumberTile && ((NumberTile) grid[startPosX][i]).getNumOfMines() > 0){
-                grid[i][startPosY].setHidden(false);
+                grid[startPosX][i].setHidden(false);
                 break;
+
+
             }else {
                 grid[startPosX][i].setHidden(false);
             }
@@ -354,19 +330,16 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
-        /*
-        while (!(grid[startPosX][i] instanceof MineTile) && i >= 0) {
-            grid[startPosX][i].setHidden(false);
-            i -= 1;
-        }
 
-         */
         for ( int i = startPosY; i>=0;i--) {
             if((grid[startPosX][i] instanceof MineTile)) {
                 break;
+
             } else if (grid[startPosX][i] instanceof NumberTile && ((NumberTile) grid[startPosX][i]).getNumOfMines() > 0){
                 grid[i][startPosY].setHidden(false);
                 break;
+
+
             } else {
                 grid[startPosX][i].setHidden(false);
             }
@@ -379,18 +352,21 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
+        int i = startPosX;
+        int j = startPosY;
 
-        for (int i = startPosX; i >= 0; i --) {
-            for (int j =startPosY; j < grid.length; j++) {
-                if(grid[i][j] instanceof MineTile) {
-                    break;
-                } else if (grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
-                    grid[i][startPosY].setHidden(false);
-                    break;
-                } else {
-                    grid[i][j].setHidden(false);
-                }
+        while (i> 0 && j < grid.length) {
+            if((grid[i][j] instanceof MineTile)) {
+                break;
+            } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                grid[i][j].setHidden(false);
+                break;
+
+            } else {
+                grid[i][j].setHidden(false);
             }
+            i -= 1;
+            j += 1;
         }
 
         this.setGrid(grid);
@@ -400,20 +376,22 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
+        int i = startPosX;
+        int j =startPosY;
 
-        for (int i = startPosX; i >= 0; i --) {
-            for (int j =startPosY; j >= 0; j --) {
-                if(grid[i][j] instanceof MineTile) {
-                    break;
-                }else if  (grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
-                    grid[i][startPosY].setHidden(false);
-                    break;
-                } else {
-                    grid[i][j].setHidden(false);
-                }
+        while (i >= 0 && j >= 0) {
+            if((grid[i][j] instanceof MineTile)) {
+                break;
+            } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                grid[i][j].setHidden(false);
+                break;
+
+            } else {
+                grid[i][j].setHidden(false);
             }
+            i -= 1;
+            j -= 1;
         }
-
         this.setGrid(grid);
     }
 
@@ -421,18 +399,21 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
+        int i = startPosX;
+        int j =startPosY;
 
-        for (int i = startPosX; i < grid.length; i ++) {
-            for (int j =startPosY; j >= 0; j --) {
-                if((grid[i][j] instanceof MineTile)) {
-                    break;
-                } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
-                    grid[i][startPosY].setHidden(false);
-                    break;
-                } else {
-                    grid[i][j].setHidden(false);
-                }
+        while (i < grid.length && j >= 0) {
+            if((grid[i][j] instanceof MineTile)) {
+                break;
+            } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
+                grid[i][j].setHidden(false);
+                break;
+
+            } else {
+                grid[i][j].setHidden(false);
             }
+            i += 1;
+            j -= 1;
         }
 
         this.setGrid(grid);
@@ -442,40 +423,24 @@ public class Grid {
         Tile[][] grid = this.getGrid();
         int startPosX = this.getStartX();
         int startPosY = this.getStartY();
+        int i = startPosX;
+        int j =startPosY;
 
-        for (int i = startPosX; i < grid.length; i ++) {
-            for (int j =startPosY; j < grid.length; j ++) {
-                if(grid[i][j] instanceof MineTile) {
-                    break;
-                } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
-                    grid[i][startPosY].setHidden(false);
-                    break;
-                }else {
-                    grid[i][j].setHidden(false);
-                }
-            }
-        }
-
-        this.setGrid(grid);
-    }
-/*
-    public void revealNorthWest() {
-        Tile[][] grid = this.getGrid();
-        int startPosX = this.getStartX();
-        int startPosY = this.getStartY();
-
-        if (startPosY < 9 && startPosX < 9) {
-            int i = startPosX;
-            int j = startPosY;
-            while (i < 9 || j < 9) {
+        while (i < grid.length && j < grid.length) {
+            if((grid[i][j] instanceof MineTile)) {
+                break;
+            } else if(grid[i][j] instanceof NumberTile && ((NumberTile) grid[i][j]).getNumOfMines() > 0){
                 grid[i][j].setHidden(false);
-                i += 1;
-                j += 1;
+                break;
+
+            } else {
+                grid[i][j].setHidden(false);
             }
+            i += 1;
+            j += 1;
         }
 
         this.setGrid(grid);
     }
-*/
 
 }

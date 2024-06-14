@@ -1,10 +1,9 @@
 package org.example;
 
 public class NumberTile extends Tile{
+
     private int numOfMines;
-    public int getNumOfMines() {
-        return numOfMines;
-    }
+
 
 
     public NumberTile(int x, int y, int numOfMines) {
@@ -14,7 +13,12 @@ public class NumberTile extends Tile{
 
 
     //private int calcNumOfMines(){}
-
+    public void setNumOfMines(int numOfMines) {
+        this.numOfMines = numOfMines;
+    }
+    public int getNumOfMines() {
+        return numOfMines;
+    }
 
     public char printVal(){
         char charReturn;
