@@ -22,6 +22,13 @@ public class Tile {
     public String printIsHidden(){
         return "H ";
     }
+
+    /*
+    public char printFlagged(){
+        return 'F';
+    }
+
+     */
     public char printVal(){
         return '0';
     }

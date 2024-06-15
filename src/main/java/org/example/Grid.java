@@ -105,6 +105,7 @@ public class Grid {
             int tempX = position.getPosX();
             int tempY = position.getPosY();
             grid[tempX][tempY] = new NumberTile(tempX, tempY, 0);
+            grid[tempX][tempY].setHidden(false);
         }
         return grid;
     }

@@ -8,6 +8,11 @@ public class MineTile extends Tile{
 
     // Prints M to indicate it is a mine when tile is revealed
     public char printVal() {
+        if (this.isHidden()){
+            return 'H';
+        }else if (this.isFlagged()) {
+            return 'F';
+        }
         return 'M';
     }
 }

@@ -49,8 +49,14 @@ public class NumberTile extends Tile{
                 charReturn = '8';
                 break;
             default:
-                //System.out.println("Error with mine value");
-                charReturn = '0';
+                if (this.isHidden()){
+                    charReturn = 'H';
+                }else if (this.isFlagged()){
+                    charReturn = 'F';
+                }else {
+                    charReturn = '0';
+                }
+
                 break;
         }
         return charReturn;
