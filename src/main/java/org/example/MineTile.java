@@ -12,7 +12,9 @@ public class MineTile extends Tile{
             return 'H';
         }else if (this.isFlagged()) {
             return 'F';
+        } else {
+            return 'M';
         }
-        return 'M';
+
     }
 }

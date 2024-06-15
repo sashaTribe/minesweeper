@@ -23,42 +23,43 @@ public class NumberTile extends Tile{
     public char printVal(){
         char charReturn;
         int mineValue = this.getNumOfMines();
-        switch (mineValue) {
-            case 1:
-                charReturn = '1';
-                break;
-            case 2:
-                charReturn =  '2';
-                break;
-            case 3:
-                charReturn = '3';
-                break;
-            case 4:
-                charReturn = '4';
-                break;
-            case 5:
-                charReturn = '5';
-                break;
-            case 6:
-                charReturn = '6';
-                break;
-            case 7:
-                charReturn = '7';
-                break;
-            case 8:
-                charReturn = '8';
-                break;
-            default:
-                if (this.isHidden()){
-                    charReturn = 'H';
-                }else if (this.isFlagged()){
-                    charReturn = 'F';
-                }else {
+        if (this.isHidden()) {
+            charReturn = 'H';
+        } else if(this.isFlagged()){
+            charReturn = 'F';
+        } else {
+            switch (mineValue) {
+                case 1:
+                    charReturn = '1';
+                    break;
+                case 2:
+                    charReturn =  '2';
+                    break;
+                case 3:
+                    charReturn = '3';
+                    break;
+                case 4:
+                    charReturn = '4';
+                    break;
+                case 5:
+                    charReturn = '5';
+                    break;
+                case 6:
+                    charReturn = '6';
+                    break;
+                case 7:
+                    charReturn = '7';
+                    break;
+                case 8:
+                    charReturn = '8';
+                    break;
+                default:
                     charReturn = '0';
-                }
+                    break;
+            }
 
-                break;
         }
+
         return charReturn;
     }
 }
