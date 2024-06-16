@@ -11,6 +11,8 @@ public class Position {
         this.posY = posY;
     }
 
+
+
     public int getPosX() {
         return posX;
     }

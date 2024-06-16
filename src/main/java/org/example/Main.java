@@ -4,11 +4,19 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
 
-        Game game = new Game(true);
+        System.out.println("How many rows for the grid: ");
+        int numOfRows = scn.nextInt();
+        System.out.println("How many columns for the grid: ");
+        int numOfColumns = scn.nextInt();
+        Game game = new Game(numOfRows,numOfColumns);
         game.startGame();
 
-
+         /*
+        NewGrid grid = new NewGrid(6,6);
+        grid.createGrid();
+          */
         /*
         Scanner scn = new Scanner(System.in);
         System.out.println("X Starting point: ");

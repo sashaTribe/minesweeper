@@ -23,10 +23,11 @@ public class NumberTile extends Tile{
     public char printVal(){
         char charReturn;
         int mineValue = this.getNumOfMines();
+        if (this.isFlagged()) {
+            return 'F';
+        }
         if (this.isHidden()) {
             charReturn = 'H';
-        } else if(this.isFlagged()){
-            charReturn = 'F';
         } else {
             switch (mineValue) {
                 case 1:

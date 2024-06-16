@@ -30,10 +30,15 @@ public class Tile {
 
      */
     public char printVal(){
-        return '0';
+        if (isHidden()){
+            return 'H';
+        } else {
+            return '0';
+        }
+
     }
     public boolean isHidden() {
-        return isHidden;
+        return this.isHidden;
     }
 
     public void setHidden(boolean hidden) {
