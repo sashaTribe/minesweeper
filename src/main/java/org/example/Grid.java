@@ -257,9 +257,6 @@ public class Grid {
     }
 
 
-    public void updateGrid(Tile[][] grid, int x, int y) {
-
-    }
 
     public void revealNorth(){
         Tile[][] grid = this.getGrid();

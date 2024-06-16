@@ -13,30 +13,7 @@ public class Main {
         Game game = new Game(numOfRows,numOfColumns);
         game.startGame();
 
-         /*
-        NewGrid grid = new NewGrid(6,6);
-        grid.createGrid();
-          */
-        /*
-        Scanner scn = new Scanner(System.in);
-        System.out.println("X Starting point: ");
-        int startX = scn.nextInt();
-        System.out.println("Y Starting point: ");
-        int startY = scn.nextInt();
-        Grid gameGrid = new Grid(startX - 1, startY - 1);
-        Tile[][] board = gameGrid.createBasicGrid();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j].isHidden()) {
-                    System.out.print(board[i][j].printIsHidden());
-                } else {
-                    System.out.print(board[i][j].printVal() + " ");
-                }
-            }
-            System.out.println();
-        }
 
-         */
     }
 
 

@@ -8,6 +8,7 @@ public class NewGrid {
     private Tile[][] grid;
     private int startX;
     private int startY;
+    private ArrayList<Integer[]> visitedPositions = new ArrayList<>();
 
 
     public NewGrid (int numOfCols, int numOfRows){
@@ -42,11 +43,11 @@ public class NewGrid {
 
         ArrayList<Position> freePositions = getFreeSpaces(board);
         this.placeMines(freePositions, board, numOfMines);
-        System.out.println("I have placed the mines");
+        //System.out.println("I have placed the mines");
         this.fillInRestOfSpaces(board);
         board = this.getGrid();
         this.dfsReveal(startX, startY, board);
-        System.out.println("I have filled out the rest of my board");
+        //System.out.println("I have filled out the rest of my board");
         board = this.getGrid();
         countMineForStart(startX,startY, board);
         this.printGrid(board);
@@ -87,15 +88,15 @@ public class NewGrid {
         }
     }
 
-    public void setUpStartingPoint(int x, int y) {
+    private void setUpStartingPoint(int x, int y) {
         Tile[][] grid = this.getGrid();
         grid[x][y] = new NumberTile(x,y,0);
         grid[x][y].setHidden(false);
         this.setGrid(grid);
-        //printGrid(grid);
     }
 
-    public void noZeroZone(int startX, int startY, int islandSize, Tile[][] board) {
+    // bfs search
+    private void noZeroZone(int startX, int startY, int islandSize, Tile[][] board) {
         Queue<Position> queue = new LinkedList<>();
         ArrayList<Position> zeroCells = new ArrayList<>();
         Position startPos = new Position(startX,startY);
@@ -127,6 +128,7 @@ public class NewGrid {
 
     }
 
+    //
     private ArrayList<Integer> generateRandomNumbers (int min, int max, int size) {
         Random random = new Random();
         System.out.println(min);
@@ -214,7 +216,7 @@ public class NewGrid {
         //this.printGrid(board);
     }
 
-    public boolean isThereAMine(Tile[][] board, int[] direction, int x, int y) {
+    private boolean isThereAMine(Tile[][] board, int[] direction, int x, int y) {
         int xVal = x + direction[0];
         int yVal = y + direction[1];
         if (xVal < 0 || xVal >= board.length || yVal < 0 || yVal >= board[0].length){
@@ -223,36 +225,48 @@ public class NewGrid {
         return board[xVal][yVal] instanceof MineTile;
     }
 
-    public void revealTilesAroundIsland (Tile[][] board, ArrayList<Position> zeroIslandList ){
-        int[][] directions = {{0,1},{0,-1}, {1,0}, {-1,0}};
-        for (Position pos: zeroIslandList) {
-            for (int [] direction : directions) {
-                int tempX = pos.getPosX() + direction[0];
-                int tempY = pos.getPosY() + direction[1];
-                if ((tempX >= 0 && tempX < board.length) && (tempY >= 0 && tempY < board[0].length)) {
-                    if (board[tempX][tempY] instanceof NumberTile) {
-                        board[tempX][tempY].setHidden(false);
-                    }
-                    if (!(board[tempX][tempY] instanceof MineTile)) {
-                        break;
-                    }
-                }
-            }
-        }
-
-    }
 
 
 
-    public void dfsReveal(int x, int y, Tile[][] board) {
-        //System.out.println("hello sash");
-        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-        if (x < 0 || x >= board.length || y >= board[0].length || y < 0 || (board[x][y] instanceof MineTile)) {
+    private void dfsReveal(int x, int y, Tile[][] board) {
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        System.out.println(x);
+        ArrayList<Integer[]> visitedPos = this.getVisitedPositions();
+        Integer[] tempPos = new Integer[2];
+        tempPos[0] = x;
+        tempPos[1] = y;
+        if (x < 0 || x >= board.length || y >= board[0].length || y < 0 ){
             return;
         }
+        if (!(visitedPos.contains(tempPos))) {
+            try {
+                if (board[x][y] instanceof MineTile){
+                    System.out.println("X Val: " + x + "Y Val: " + y);
+                    return;
+                }
+
+            } catch(ArrayIndexOutOfBoundsException e) {
+                System.out.println("The index taken is out of range");
+            }
+
+
+        }
         board[x][y].setHidden(false);
+        visitedPos.add(tempPos);
+        this.setVisitedPositions(visitedPos);
+
+
+        if(((NumberTile) board[x][y]).getNumOfMines() == 0) {
+
+            dfsReveal(x + directions[0][0], y + directions[0][1], board);
+            dfsReveal(x + directions[1][0], y + directions[1][1], board);
+            dfsReveal(x + directions[2][0], y + directions[2][1], board);
+            dfsReveal(x + directions[3][0], y + directions[3][1], board);
+
+
+        }
+        /*
         if (board[x][y] instanceof NumberTile) {
-            if(((NumberTile) board[x][y]).getNumOfMines() == 0) {
 
                 for (int[] direction : directions) {
                     int newX = x + direction[0];
@@ -261,12 +275,13 @@ public class NewGrid {
 
                 }
 
-
-
-            }
-
+                 */
         }
-    }
+
+
+
+
+
         public Tile[][] getGrid () {
             return grid;
         }
@@ -307,6 +322,13 @@ public class NewGrid {
             this.startY = startY;
         }
 
+    public ArrayList<Integer[]> getVisitedPositions() {
+        return visitedPositions;
+    }
+
+    public void setVisitedPositions(ArrayList<Integer[]> visitedPositions) {
+        this.visitedPositions = visitedPositions;
+    }
 
 
 }

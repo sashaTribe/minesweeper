@@ -3,9 +3,6 @@ package org.example;
 public class Tile {
     private Position position;
     private boolean isHidden;
-
-
-
     private boolean isFlagged;
 
     public Tile(int x, int y){
@@ -19,16 +16,6 @@ public class Tile {
     }
 
 
-    public String printIsHidden(){
-        return "H ";
-    }
-
-    /*
-    public char printFlagged(){
-        return 'F';
-    }
-
-     */
     public char printVal(){
         if (isHidden()){
             return 'H';
