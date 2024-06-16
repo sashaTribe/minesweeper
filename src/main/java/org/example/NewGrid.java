@@ -48,7 +48,22 @@ public class NewGrid {
         this.dfsReveal(startX, startY, board);
         System.out.println("I have filled out the rest of my board");
         board = this.getGrid();
+        countMineForStart(startX,startY, board);
         this.printGrid(board);
+
+    }
+
+    private void countMineForStart (int startX, int startY, Tile[][] board) {
+        int[][] directions = {{0,1},{0,-1}, {1,0}, {-1,0}, {1,1}, {1,-1}, {-1,1},{-1,-1}};
+        int count = 0;
+        for (int[] direction : directions) {
+            if(this.isThereAMine(board,direction,startX,startY)){
+                count += 1;
+            }
+        }
+        board[startX][startY] = new NumberTile(startX, startY, count);
+        board[startX][startY].setHidden(false);
+        this.setGrid(board);
 
     }
 
@@ -65,7 +80,6 @@ public class NewGrid {
     public void printGrid(Tile[][] grid) {
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
-                //grid[i][j] = new Tile(i,j);
                 System.out.print(grid[i][j].printVal());
                 System.out.print(' ');
             }
@@ -203,6 +217,9 @@ public class NewGrid {
     public boolean isThereAMine(Tile[][] board, int[] direction, int x, int y) {
         int xVal = x + direction[0];
         int yVal = y + direction[1];
+        if (xVal < 0 || xVal >= board.length || yVal < 0 || yVal >= board[0].length){
+            return false;
+        }
         return board[xVal][yVal] instanceof MineTile;
     }
 
@@ -227,19 +244,25 @@ public class NewGrid {
 
 
 
-    private void dfsReveal(int x, int y, Tile[][] board) {
+    public void dfsReveal(int x, int y, Tile[][] board) {
+        //System.out.println("hello sash");
         int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-        if (x < 0 || x >= board.length || x >= board[0].length || !(board[x][y].isHidden())) {
+        if (x < 0 || x >= board.length || y >= board[0].length || y < 0 || (board[x][y] instanceof MineTile)) {
             return;
         }
         board[x][y].setHidden(false);
         if (board[x][y] instanceof NumberTile) {
-            if(((NumberTile) board[x][y]).getNumOfMines() == 0){
+            if(((NumberTile) board[x][y]).getNumOfMines() == 0) {
+
                 for (int[] direction : directions) {
                     int newX = x + direction[0];
                     int newY = y + direction[1];
-                    dfsReveal(newX, newY,board);
+                    dfsReveal(newX, newY, board);
+
                 }
+
+
+
             }
 
         }
