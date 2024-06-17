@@ -22,23 +22,16 @@ public class NewGrid {
         board = initiateBoard(board);
         this.setGrid(board);
         Scanner scn = new Scanner(System.in);
-        double doubleNumOfMines = Math.ceil(0.2 * this.getNumOfCols() * this.getNumOfRows());
-        int numOfMines = (int) doubleNumOfMines;
-        this.setNumMines(numOfMines);
-
+        this.calculateNumOfMines();
         printGrid(board);
+        Position pos = getValidatedPosition(board);
+        int startX = pos.getPosX();
+        int startY = pos.getPosY();
 
-        System.out.println("Starting x-coordinate: ");
-        int startX = scn.nextInt() - 1;
-        System.out.println("Starting y-coordinate: ");
-        int startY = scn.nextInt() - 1;
         setUpStartingPoint(startX, startY);
         this.setStartX(startX);
         this.setStartY(startY);
 
-        //double maxVal = Math.max(this.getNumOfCols(), this.getNumOfRows());
-        //int zeroIslandSize = Math.round((long) maxVal / 2);
-        //int zeroIslandSize = Math.ceil(total);
         noZeroZone(startX,startY,1,board);
 
         ArrayList<Position> freePositions = getFreeSpaces(board);
@@ -54,6 +47,29 @@ public class NewGrid {
 
     }
 
+    public Position getValidatedPosition (Tile[][] board) {
+        boolean isValidInput = false;
+        int startX = 0;
+        int startY = 0;
+        Scanner scn = new Scanner(System.in);
+        do {
+            try {
+                System.out.println("Starting x-coordinate: ");
+                startX = scn.nextInt() - 1;
+                System.out.println("Starting y-coordinate: ");
+                startY = scn.nextInt() - 1;
+                isValidInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("The value you entered is not a valid integer, please try again");
+                scn.next();
+            }
+        }while (!isValidInput || !isInputValid(startX, board.length) || !isInputValid(startY, board.length));
+        Position pos = new Position(startX, startY);
+        return pos;
+    }
+    public static boolean isInputValid(int val, int size) {
+        return (val >= 0 && val < size);
+    }
     private void countMineForStart (int startX, int startY, Tile[][] board) {
         int[][] directions = {{0,1},{0,-1}, {1,0}, {-1,0}, {1,1}, {1,-1}, {-1,1},{-1,-1}};
         int count = 0;
@@ -88,6 +104,18 @@ public class NewGrid {
         }
     }
 
+    public void revealTheWholeBoard (Tile[][] board){
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j].setHidden(false);
+                board[i][j].setFlagged(false);
+                System.out.print(grid[i][j].printVal());
+                System.out.print(' ');
+            }
+            System.out.println();
+        }
+        this.setGrid(board);
+    }
     private void setUpStartingPoint(int x, int y) {
         Tile[][] grid = this.getGrid();
         grid[x][y] = new NumberTile(x,y,0);
@@ -211,12 +239,12 @@ public class NewGrid {
 
             }
         }
-        System.out.println("I have filled in rest of spaces");
+        //System.out.println("I have filled in rest of spaces");
         this.setGrid(board);
         //this.printGrid(board);
     }
 
-    private boolean isThereAMine(Tile[][] board, int[] direction, int x, int y) {
+    public boolean isThereAMine(Tile[][] board, int[] direction, int x, int y) {
         int xVal = x + direction[0];
         int yVal = y + direction[1];
         if (xVal < 0 || xVal >= board.length || yVal < 0 || yVal >= board[0].length){
@@ -228,9 +256,9 @@ public class NewGrid {
 
 
 
-    private void dfsReveal(int x, int y, Tile[][] board) {
+    public void dfsReveal(int x, int y, Tile[][] board) {
         int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        System.out.println(x);
+        System.out.println(x + "and" + y);
         ArrayList<Integer[]> visitedPos = this.getVisitedPositions();
         Integer[] tempPos = new Integer[2];
         tempPos[0] = x;
@@ -265,19 +293,13 @@ public class NewGrid {
 
 
         }
-        /*
-        if (board[x][y] instanceof NumberTile) {
+    }
 
-                for (int[] direction : directions) {
-                    int newX = x + direction[0];
-                    int newY = y + direction[1];
-                    dfsReveal(newX, newY, board);
-
-                }
-
-                 */
-        }
-
+    private void calculateNumOfMines(){
+        double doubleNumOfMines = Math.ceil(0.2 * this.getNumOfCols() * this.getNumOfRows());
+        int numOfMines = (int) doubleNumOfMines;
+        this.setNumMines(numOfMines);
+    }
 
 
 

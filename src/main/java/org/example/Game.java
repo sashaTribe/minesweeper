@@ -9,21 +9,24 @@ public class Game {
     private boolean hasGameStarted;
     private Position pos;
     private boolean hasMineRevealed;
+    private boolean hasAllTilesBeenRevealed;
     private int numOfFlags;
 
     public Game(int numOfRows, int numOfCols) {
         this.hasGameStarted = true;
         this.hasMineRevealed = false;
+        this.hasAllTilesBeenRevealed = false;
         this.grid = new NewGrid(numOfRows, numOfCols);
         //this.numOfFlags = this.grid.getNumOfMines();
 
     }
 
     public void startGame() {
-        NewGrid board = this.getGrid();
-        board.createGrid();
-        this.setNumOfFlags(board.getNumOfMines());
-        while (!this.isHasMineRevealed()) {
+        NewGrid grid = this.getGrid();
+        grid.createGrid();
+        Tile[][] board = grid.getGrid();
+        this.setNumOfFlags(grid.getNumOfMines());
+        while (!this.isHasMineRevealed() || !(areAllTilesRevealed(board))){
             System.out.println("You have " + this.getNumOfFlags() + " flags left.");
             runGame();
         }
@@ -35,6 +38,10 @@ public class Game {
 
     public void runGame() {
         Tile[][] board = grid.getGrid();
+        if (this.areAllTilesRevealed(board)){
+            System.out.println("You have won the game!");
+            this.setHasAllTilesBeenRevealed(true);
+        }
         this.grid.printGrid(board);
         System.out.println("Would you like to: ");
         System.out.println("1. Place Flag ");
@@ -61,50 +68,70 @@ public class Game {
     }
 
     public void placeFlag(Tile[][] board) {
+        Position pos = getPositionPrompt(board);
+        int x = pos.getPosX();
+        int y = pos.getPosY();
+        if(isInputValid(x, board.length) && isInputValid(y,board[0].length)){
+            if (board[x][y].isHidden()) {
+                board[x][y].setHidden(false);
+                board[x][y].setFlagged(true);
+                this.setNumOfFlags(this.getNumOfFlags() - 1);
+            }
+            this.getGrid().setGrid(board);
+        } else{
+            System.out.println("Value(s) you have typed invalid.");
+        }
+
+    }
+
+    public Position getPositionPrompt(Tile[][] board) {
         Scanner scn = new Scanner(System.in);
         System.out.println("Can you give me the row number: ");
         int x = scn.nextInt() - 1;
         System.out.println("Can you give me the column number: ");
         int y = scn.nextInt() - 1;
+        Position pos = new Position(x,y);
+        return pos;
+    }
 
-        if (board[x][y].isHidden()) {
-            board[x][y].setHidden(false);
-            board[x][y].setFlagged(true);
-            this.setNumOfFlags(this.getNumOfFlags() - 1);
-        }
-        this.getGrid().setGrid(board);
+    public static boolean isInputValid(int val, int size) {
+        return (val >= 0 && val < size);
     }
 
     public void revealTile() {
         Tile[][] grid = this.getGrid().getGrid();
-        Scanner scn = new Scanner(System.in);
-        System.out.println("Can you give me the row number: ");
-        int x = scn.nextInt() - 1;
-        System.out.println("Can you give me the column number: ");
-        int y = scn.nextInt() - 1;
-
-        System.out.println("hello");
+        Position pos = getPositionPrompt(grid);
+        int x = pos.getPosX();
+        int y = pos.getPosY();
         if (grid[x][y].isHidden()) {
             grid[x][y].setHidden(false);
             System.out.println("Tile no longer hidden");
             if (grid[x][y] instanceof MineTile) {
                 System.out.println("Mine set off, you lost!");
+                this.getGrid().revealTheWholeBoard(grid);
+                this.setHasAllTilesBeenRevealed(true);
                 this.setHasMineRevealed(true);
-                for (int i = 0; i < grid.length; i++) {
-                    for (int j = 0; j < grid[i].length; j++) {
-                        grid[i][j].setHidden(false);
-                        grid[i][j].setFlagged(false);
-                        System.out.print(grid[i][j].printVal());
-                        System.out.print(' ');
-                    }
-                    System.out.println();
-                }
+
             }
         } else {
             System.out.println("This is already revealed, choose another");
         }
         this.getGrid().setGrid(grid);
 
+    }
+
+
+
+    public static boolean areAllTilesRevealed (Tile[][] board) {
+        int counter = 0;
+        for (int i=0; i < board.length; i++) {
+            for (int j=0; j < board[0].length; j++){
+                if (!board[i][j].isHidden()) {
+                    counter += 1;
+                }
+            }
+        }
+        return (counter == (board[0].length * board.length));
     }
 
 
@@ -124,6 +151,8 @@ public class Game {
                 Position chosenPosition = flagPositions.get(userChoice);
                 board[chosenPosition.getPosX()][chosenPosition.getPosY()].setFlagged(false);
                 board[chosenPosition.getPosX()][chosenPosition.getPosY()].setHidden(true);
+                int numOfFlags = this.getNumOfFlags();
+                this.setNumOfFlags(numOfFlags + 1);
             } catch (Exception e) {
                 System.out.println("Something went wrong");
             }
@@ -144,7 +173,6 @@ public class Game {
                     }
                 }
             }
-            System.out.println("Success");
             return positions;
         }
         public Position getPos () {
@@ -177,6 +205,14 @@ public class Game {
         public void setHasMineRevealed (boolean hasMineRevealed){
             this.hasMineRevealed = hasMineRevealed;
         }
+
+    public boolean isHasAllTilesBeenRevealed() {
+        return hasAllTilesBeenRevealed;
+    }
+
+    public void setHasAllTilesBeenRevealed(boolean hasAllTilesBeenRevealed) {
+        this.hasAllTilesBeenRevealed = hasAllTilesBeenRevealed;
+    }
 
 
     }
