@@ -26,7 +26,7 @@ public class Game {
         grid.createGrid();
         Tile[][] board = grid.getGrid();
         this.setNumOfFlags(grid.getNumOfMines());
-        while (!this.isHasMineRevealed() || !(areAllTilesRevealed(board))){
+        while (!this.isHasMineRevealed() || !(this.areAllTilesRevealed(board))){
             System.out.println("You have " + this.getNumOfFlags() + " flags left.");
             runGame();
         }
@@ -62,8 +62,6 @@ public class Game {
         }else {
             System.out.println("Instruction invalid");
         }
-        //Grid grid = this.getGrid();
-        //this.getGrid().printGrid(this.getGrid().getGrid());
 
     }
 

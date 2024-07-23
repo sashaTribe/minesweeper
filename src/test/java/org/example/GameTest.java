@@ -2,7 +2,6 @@ package org.example;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 
 public class GameTest {
 
@@ -48,6 +47,11 @@ public class GameTest {
         Game game = new Game(4,4);
         NewGrid grid = game.getGrid();
         Tile[][] board = grid.getGrid();
+        for (int i=0; i <board.length; i++) {
+            for(int j=0; j<board.length; j++) {
+                board[i][j] = new Tile(i,j);
+            }
+        }
         //grid.revealTheWholeBoard(board);
         final var expected = false;
         final var actual = game.areAllTilesRevealed(board);

@@ -4,10 +4,13 @@ import org.junit.jupiter.api.Test;
 
 
 public class MineTileTest {
+
+
     @Test
     public void printCharPrintsM () {
         final var expected = 'M';
         MineTile m =new MineTile(3,4);
+        m.setHidden(false);
         Assertions.assertEquals(expected, m.printVal());
     }
 }

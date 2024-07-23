@@ -101,9 +101,12 @@ public class NewGridTest {
         board[2][0] = new NumberTile(2,0,0);
         grid.fillInRestOfSpaces(board);
         Tile[][] updatedBoard = grid.getGrid();
-        Assertions.assertEquals('0', updatedBoard[2][0].printVal());
-        Assertions.assertEquals('1', updatedBoard[1][0].printVal());
-        Assertions.assertEquals('1', updatedBoard[2][1].printVal());
+        updatedBoard[2][0].setHidden(false);
+        updatedBoard[1][0].setHidden(false);
+        updatedBoard[2][1].setHidden(false);
+        Assertions.assertEquals('0', board[2][0].printVal());
+        Assertions.assertEquals('1', board[1][0].printVal());
+        Assertions.assertEquals('1', board[2][1].printVal());
 
 
     }
